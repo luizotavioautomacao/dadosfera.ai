@@ -141,11 +141,11 @@ class DataGenerator:
     
     def generate_latitude(self):
         """Generate a random latitude."""
-        return round(random.uniform(-33.0, 5.3), 6)
+        return round(random.uniform(-33.7500, 5.2718), 6)
 
     def generate_longitude(self):
         """Generate a random longitude."""
-        return round(random.uniform(-74.0, -34.0), 6)
+        return round(random.uniform(-73.9922, -34.7931), 6)
     
     def add_lat_long_to_cities(self, cities_df):
         """Adiciona latitude e longitude sintéticas aos municípios."""
