@@ -6,14 +6,13 @@ import os
 # Initial Setup
 fake = Faker()
 output = "output/"
-n_client=10000
-n_product=500
-n_transaction=100000
-n_behavior=200000
+n_client = 10000
+n_product = 500
+n_transaction = 100000
+n_behavior = 200000
 
 # Ensure the directory exists
 os.makedirs(output, exist_ok=True)
-
 
 class DataGenerator:
     """Responsible for generating different types of synthetic data."""
@@ -21,19 +20,31 @@ class DataGenerator:
     def __init__(self):
         self.fake = Faker()
 
-    def generate_clients(self, num_clients):
+    def generate_clients(self, num_clients, cities_df, states_df):
         """Generate client data."""
-        clients = [{
-            'CustomerId': self.fake.uuid4(),
-            'Name': self.fake.name(),
-            'Age': random.randint(18, 70),
-            'Gender': random.choice(['Masculino', 'Feminino']),
-            'Location': self.fake.city(),
-            'Profession': self.fake.job(),
-            'LastVisit': self.fake.date_this_year(),
-            'PurchaseHistory': random.choice(['Baixo', 'Médio', 'Alto']),
-            'Preferences': random.choice(['Tecnologia', 'Moda', 'Decoração de Casa', 'Livros', 'Esportes']),
-        } for _ in range(num_clients)]
+        # Create a mapping of state code to cities
+        state_to_cities = cities_df.groupby('COD UF')['NOME'].apply(list).to_dict()
+
+        clients = []
+        for _ in range(num_clients):
+            state_code = random.choice(states_df['COD'])
+            state = states_df[states_df['COD'] == state_code].iloc[0]
+            cities = state_to_cities.get(state_code, [])
+            city = random.choice(cities) if cities else self.fake.city()
+
+            clients.append({
+                'CustomerId': self.fake.uuid4(),
+                'Name': self.fake.name(),
+                'Age': random.randint(18, 70),
+                'Gender': random.choice(['Masculino', 'Feminino']),
+                'City': city,
+                'State': state['SIGLA'],
+                'Location': self.fake.city(),
+                'Profession': self.fake.job(),
+                'LastVisit': self.fake.date_this_year(),
+                'PurchaseHistory': random.choice(['Baixo', 'Médio', 'Alto']),
+                'Preferences': random.choice(['Tecnologia', 'Moda', 'Decoração de Casa', 'Livros', 'Esportes']),
+            })
         return pd.DataFrame(clients)
     
     def generate_categories(self):
@@ -75,18 +86,22 @@ class DataGenerator:
         } for i in range(1, num_products + 1)]
         return pd.DataFrame(products)
 
-    def generate_transactions(self, clients, products, num_transactions):
+    def generate_transactions(self, clients, products, num_transactions, cities_df):
         """Generate transaction data."""
-        transactions = [{
-            'TransactionId': self.fake.uuid4(),
-            'CustomerId': random.choice(clients)['CustomerId'],
-            'ProductId': random.choice(products)['ProductId'],
-            'Date': self.fake.date_between(start_date='-1y', end_date='today'),
-            'Quantity': random.randint(1, 3),
-            'TotalValue': round(random.uniform(5, 500), 2),
-            'PaymentMethod': random.choice(['Credit Card', 'Debit Card', 'PayPal', 'Bank Transfer', 'Pix']),
-            'CouponApplied': random.choice([True, False])
-        } for _ in range(num_transactions)]
+        transactions = []
+        for _ in range(num_transactions):
+            transactions.append({
+                'TransactionId': self.fake.uuid4(),
+                'CustomerId': random.choice(clients)['CustomerId'],
+                'ProductId': random.choice(products)['ProductId'],
+                'Date': self.fake.date_between(start_date='-1y', end_date='today'),
+                'Quantity': random.randint(1, 3),
+                'TotalValue': round(random.uniform(5, 500), 2),
+                'PaymentMethod': random.choice(['Credit Card', 'Debit Card', 'PayPal', 'Bank Transfer', 'Pix']),
+                'CouponApplied': random.choice([True, False]),
+                'Latitude': self.generate_latitude(),
+                'Longitude': self.generate_latitude()
+            })
         return pd.DataFrame(transactions)
 
     def generate_cart(self, clients, products, num_carts):
@@ -124,7 +139,20 @@ class DataGenerator:
             'LinkClicked': random.choice([True, False])
         } for _ in range(num_behaviors)]
         return pd.DataFrame(behaviors)
+    
+    def generate_latitude(self):
+        """Generate a random latitude."""
+        return round(random.uniform(-33.0, 5.3), 6)
 
+    def generate_longitude(self):
+        """Generate a random longitude."""
+        return round(random.uniform(-74.0, -34.0), 6)
+    
+    def add_lat_long_to_cities(self, cities_df):
+        """Adiciona latitude e longitude sintéticas aos municípios."""
+        cities_df['Latitude'] = cities_df.apply(lambda _: self.generate_latitude(), axis=1)
+        cities_df['Longitude'] = cities_df.apply(lambda _: self.generate_longitude(), axis=1)
+        return cities_df
 
 class DataSaver:
     """Responsible for saving data to files."""
@@ -145,10 +173,14 @@ def main():
     generator = DataGenerator()
     saver = DataSaver(output)
 
+    # Read the state and city data
+    states = pd.read_csv("brasil/estados.csv")
+    cities = generator.add_lat_long_to_cities(pd.read_csv("brasil/municipios.csv"))
+
     # Generate data
-    clients_df = generator.generate_clients(n_client)
+    clients_df = generator.generate_clients(n_client, cities, states)
     products_df = generator.generate_products(n_product)
-    transactions_df = generator.generate_transactions(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction)
+    transactions_df = generator.generate_transactions(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction, cities)
     cart_df = generator.generate_cart(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction)
     delivery_df = generator.generate_delivery(transactions_df.to_dict('records'))
     behavior_df = generator.generate_behavior(clients_df.to_dict('records'), n_behavior)
@@ -161,7 +193,5 @@ def main():
     saver.save_to_csv(delivery_df, 'delivery.csv')
     saver.save_to_csv(behavior_df, 'behavior.csv')
 
-
 if __name__ == "__main__":
     main()
-
