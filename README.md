@@ -3,6 +3,5 @@
 
 ## [Generate Synthetic Data](./generate-synthetic-data.py/)
 #### To generate synthetic data, we can use the `pandas` library to create a DataFrame with random  
- - before python3 install:  `python3 --version`
- - install dependencies: `pip install pandas numpy faker` || `pip3 install pandas numpy faker`   
+ - install dependencies: `make i`   
  - generate synthetic data: `make g`  
