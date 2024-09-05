@@ -31,7 +31,13 @@ pip3 --version
 echo "Instalando bibliotecas pandas e faker..."
 pip3 install pandas faker
 
+echo "Instalando great-expectations"
+pip3 install great-expectations
+export PATH="$PATH:$(pwd)/venv/bin"
+
 echo "Instalação concluída!"
 echo "Siga para o próximo passo."
+
+
 
 
