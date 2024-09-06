@@ -32,3 +32,14 @@
  - [Route Optimization](https://docs.google.com/document/d/1IIcxZZe7vdHMOtdrzdoQjqnRHcTLQ4ZmzbpKh6ki9pI/edit?usp=sharing)  
  - [Data Quality](https://docs.google.com/document/d/1-R6fJG-oOl7djTnm_s9nxKv6FZplP7HBnVwKYeBPEgA/edit?usp=sharing)  
  - [Terms and Services of Dadosfera](https://docs.google.com/document/d/1NocVfFwGnuHN1txQHNvK6n0IJE588Z2fH0NRlOuRe3w/edit?usp=sharing)  
+
+ ## About DataLake e DataWareHouse
+ &nbsp;              | DataLake                                                          | DataWareHouse  
+ ---------           | -------                                                           | ------
+ Estrutura de Dados  | Crua, Sem estrutura, Semi estruturado e Estruturado               | Estruturado e Processado (sanitilzado)  
+ Finalidade de Dados | Ainda não determinado                                             | Atualmente em uso  
+ Usuários            | Cientistas, arquiteto e engenheiro de dados, Analista de negócios | Profissionais de negócios e times de dados  
+ Acessibilidade      | Altamente acessíveis e rápido de atualizar                        | Mais complicado e caro para fazer alterações  
+ Consulta            | Sem otimização                                                    | Altamente otimizada
+ Uso                 | Complexo e mais difícil                                           | Facilitado  
+
