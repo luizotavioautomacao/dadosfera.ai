@@ -13,7 +13,7 @@
     - [Total Sales](./img/total-sales.png)  
     - [Average Ticket](./img/average-ticket.png)  
     - [Total Orders](./img/order.png)  
-    - [Monthly Sales](./img/daily-sales.png)  
+    - [Monthly Sales](./img/monthly-sales.png)  
     - [LTV](./img/LTV.png)  
 8. About Pipelines  
 9. Sobre Data Apps  
@@ -43,3 +43,8 @@
  Consulta            | Sem otimização                                                    | Altamente otimizada
  Uso                 | Complexo e mais difícil                                           | Facilitado  
 
+## Time management using [pomodoro](/pomodoro.csv)
+
+### Referências
+- [api de login da dadosfera](https://docs.dadosfera.ai/reference/authcontroller_signin)
+- 

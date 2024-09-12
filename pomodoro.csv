@@ -1,0 +1,34 @@
+Date,Pomodoro,Details
+05/09/2024,1,Conhecendo mais sobre Data Lake
+06/09/2024,1,Tabelas em Markdown para readme.md sobre DataLake e DataWareHouse
+06/09/2024,1,Documentação módulo de inteligência
+07/09/2024,1,Mapa Mental do modulo de inteligência
+08/09/2024,1,https://www.youtube.com/live/uXK1FTCpQDc?si=UNoFD7Q2z2lh3bDb
+09/09/2024,3,Criando projetos no módulo de inteligência
+09/09/2024,3,Buildando imagens [BLOQUEADO]
+09/09/2024,1,Conectando com APIs em https://docs.dadosfera.ai/reference
+10/09/2024,2,Ler documentação: https://github.com/dadosfera/intelligence-module-examples/blob/main/demo-pt-br-predicting-world-cup-champion/README.md
+10/09/2024,4,Criar pipelines
+10/09/2024,15P, Acessar container com VsCode; Buildar streamlit + node; Baixar o projeto do github [x]; SnowFlake.py; Biblioteca Dadosfera[x]; Criar Data App; Criar API com Flask
+10/09/2024,1,Aplicar SOLID e criar arquivo get-data.py
+11/09/2024,3,Parâmetros entre pipelines
+11/09/2024,2,Server com Flask
+11/09/2024,1,API openAi com Flask
+11/09/2024,2,API openAi com maestro.dadosfera
+11/09/2024,1,Comunicar pipelines (salvar as tabelas separadas usando o orchest ele sobrescreveu os dados)
+11/09/2024,1,Projeto git
+11/09/2024,4,Comunicar Streamlit com Flask
+11/09/2024,1,Deploy de novo ambiente para pipelines
+11/09/2024,3,Exportar KPIs para endpoint
+11/09/2024,2,Integração dos componentes aprendidos: get/generate->process->KPIs->flask->streamlit
+12/09/2024,2,Novo deploy do Environment com FLASK_ENV=development[x]; Foi possível setar pelo bash do VsCode; export FLASK_ENV=development; echo $FLASK_ENV; [x]
+12/09/2024,2,Chamar get_kpis por api
+12/09/2024,3,API não retorna conteúdo do arquivo /pipeline.json; Ler conteúdo do arquivo pipeline.json;
+12/09/2024,10,Build Environments habilitando acesso ao repositório permanente e compartilhado /data; Criando pipeline.json em /data; Serializar dataframe (Period Pandas)
+12/09/2024,2,Carregar /data/luizotavioautomacao_build/kpis.json em API /kpis
+12/09/2024,1,Refatorando notebooks e .py
+12/09/2024,0,Passar arquivos do módulo de inteligência pra git
+
+
+
+
