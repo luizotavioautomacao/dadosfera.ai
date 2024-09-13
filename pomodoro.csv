@@ -20,7 +20,7 @@ Date,Pomodoro,Details
 11/09/2024,4,Comunicar Streamlit com Flask
 11/09/2024,1,Deploy de novo ambiente para pipelines
 11/09/2024,3,Exportar KPIs para endpoint
-11/09/2024,2,Integração dos componentes aprendidos: get/generate->process->KPIs->flask->streamlit
+11/09/2024,2,Integração dos componentes aprendidos: get/generate->process->KPIs<->flask<->streamlit
 12/09/2024,2,Novo deploy do Environment com FLASK_ENV=development[x]; Foi possível setar pelo bash do VsCode; export FLASK_ENV=development; echo $FLASK_ENV; [x]
 12/09/2024,2,Chamar get_kpis por api
 12/09/2024,3,API não retorna conteúdo do arquivo /pipeline.json; Ler conteúdo do arquivo pipeline.json;

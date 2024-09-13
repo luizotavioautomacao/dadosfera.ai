@@ -1,0 +1,305 @@
+{
+    "name": "Main",
+    "parameters": {
+        "my-param": "my-param"
+    },
+    "services": {
+        "app": {
+            "args": "-c \"python3 /project-dir/app.py\"",
+            "binds": {
+                "/data": "/data",
+                "/project-dir": "/project-dir"
+            },
+            "command": "bash",
+            "exposed": true,
+            "image": "environment@7b3eafbf-eac1-4e96-a7d3-1975e2c69a25",
+            "name": "app",
+            "order": 3,
+            "ports": [
+                5000
+            ],
+            "preserve_base_path": false,
+            "requires_authentication": false,
+            "scope": [
+                "interactive",
+                "noninteractive"
+            ]
+        },
+        "data-app": {
+            "args": "-c 'umask 002 && streamlit run app/Home.py'",
+            "binds": {
+                "/data": "/data",
+                "/project-dir": "/project-dir"
+            },
+            "command": "bash",
+            "env_variables": {
+                "STREAMLIT_SERVER_BASE_URL_PATH": "$BASE_PATH_PREFIX_8501"
+            },
+            "exposed": true,
+            "image": "environment@f2cd0303-9c56-49f9-82c3-6486ac4bdc13",
+            "name": "data-app",
+            "order": 2,
+            "ports": [
+                8501
+            ],
+            "preserve_base_path": true,
+            "requires_authentication": false,
+            "scope": [
+                "interactive",
+                "noninteractive"
+            ]
+        },
+        "vscode": {
+            "args": "-c 'umask 002 && code-server --auth none --bind-addr 0.0.0.0:8080 /home/coder/code-server'",
+            "binds": {
+                "/project-dir": "/project-dir"
+            },
+            "command": "bash",
+            "exposed": true,
+            "image": "environment@214991da-9750-4b20-8c65-5b184882c788",
+            "name": "vscode",
+            "order": 1,
+            "ports": [
+                8080
+            ],
+            "requires_authentication": true,
+            "scope": [
+                "interactive"
+            ]
+        }
+    },
+    "settings": {
+        "auto_eviction": false,
+        "data_passing_memory_size": "1GB",
+        "max_steps_parallelism": 0
+    },
+    "steps": {
+        "06ec5f54-fd95-4a66-a532-eda156cb5feb": {
+            "environment": "f2cd0303-9c56-49f9-82c3-6486ac4bdc13",
+            "file_path": "src/get_data.ipynb",
+            "incoming_connections": [],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    403,
+                    444
+                ]
+            },
+            "parameters": {},
+            "title": "Buscando dados",
+            "uuid": "06ec5f54-fd95-4a66-a532-eda156cb5feb"
+        },
+        "08258dde-ef34-4b2b-805c-47c4aeae10c1": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "m_dulo_de_predi__o",
+            "incoming_connections": [
+                "0e5e8115-8adc-4055-b557-3e13d9963079"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    1100,
+                    422
+                ]
+            },
+            "parameters": {},
+            "title": "M\u00f3dulo de predi\u00e7\u00e3o",
+            "uuid": "08258dde-ef34-4b2b-805c-47c4aeae10c1"
+        },
+        "0e5e8115-8adc-4055-b557-3e13d9963079": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "pr__processamento",
+            "incoming_connections": [
+                "06ec5f54-fd95-4a66-a532-eda156cb5feb"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    808,
+                    423
+                ]
+            },
+            "parameters": {},
+            "title": "Pr\u00e9-processamento",
+            "uuid": "0e5e8115-8adc-4055-b557-3e13d9963079"
+        },
+        "0f866d31-9f0c-47d9-a97f-1322ac8dba96": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "aplicando_o_modelo",
+            "incoming_connections": [
+                "08258dde-ef34-4b2b-805c-47c4aeae10c1"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    1413,
+                    419
+                ]
+            },
+            "parameters": {},
+            "title": "Aplicando o modelo",
+            "uuid": "0f866d31-9f0c-47d9-a97f-1322ac8dba96"
+        },
+        "18fc357c-9a19-4aa6-bdbf-e1c34cc5a86b": {
+            "environment": "f183d4f5-ae46-4822-941a-42011b3824ce",
+            "file_path": "src/get_kpis.ipynb",
+            "incoming_connections": [
+                "74f65bb2-50ee-4325-ac7a-a83d3c9d0651"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    1110.5,
+                    642
+                ]
+            },
+            "parameters": {},
+            "title": "api",
+            "uuid": "18fc357c-9a19-4aa6-bdbf-e1c34cc5a86b"
+        },
+        "231eb798-97e9-4908-8ea3-693b1b1cff23": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": ".",
+            "incoming_connections": [],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    983.5,
+                    556
+                ]
+            },
+            "parameters": {},
+            "title": "",
+            "uuid": "231eb798-97e9-4908-8ea3-693b1b1cff23"
+        },
+        "4a70e1cc-f03b-473f-adc3-09784186fb69": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "gerando_dados",
+            "incoming_connections": [],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    402.5,
+                    245
+                ]
+            },
+            "parameters": {},
+            "title": "Gerando dados",
+            "uuid": "4a70e1cc-f03b-473f-adc3-09784186fb69"
+        },
+        "74f65bb2-50ee-4325-ac7a-a83d3c9d0651": {
+            "environment": "f2cd0303-9c56-49f9-82c3-6486ac4bdc13",
+            "file_path": "src/transform_kpis.ipynb",
+            "incoming_connections": [
+                "06ec5f54-fd95-4a66-a532-eda156cb5feb"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    812,
+                    641
+                ]
+            },
+            "parameters": {},
+            "title": "Principais KPIs",
+            "uuid": "74f65bb2-50ee-4325-ac7a-a83d3c9d0651"
+        },
+        "8efaa211-7fd6-47ce-9114-999d25b6c14f": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "view",
+            "incoming_connections": [
+                "0f866d31-9f0c-47d9-a97f-1322ac8dba96"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    1692.5,
+                    419
+                ]
+            },
+            "parameters": {},
+            "title": "View",
+            "uuid": "8efaa211-7fd6-47ce-9114-999d25b6c14f"
+        },
+        "982561c0-c840-49f7-9f85-aeed41c9235c": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "explorando_dados",
+            "incoming_connections": [
+                "06ec5f54-fd95-4a66-a532-eda156cb5feb"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    800,
+                    240
+                ]
+            },
+            "parameters": {},
+            "title": "Explorando dados",
+            "uuid": "982561c0-c840-49f7-9f85-aeed41c9235c"
+        },
+        "d7fb4d98-daa8-485d-9e12-c57d55d47a36": {
+            "environment": "214991da-9750-4b20-8c65-5b184882c788",
+            "file_path": "dataapp.py",
+            "incoming_connections": [
+                "18fc357c-9a19-4aa6-bdbf-e1c34cc5a86b"
+            ],
+            "kernel": {
+                "display_name": "VsCode",
+                "name": "python"
+            },
+            "meta_data": {
+                "hidden": false,
+                "position": [
+                    1422,
+                    641
+                ]
+            },
+            "parameters": {},
+            "title": "View",
+            "uuid": "d7fb4d98-daa8-485d-9e12-c57d55d47a36"
+        }
+    },
+    "uuid": "50b28133-3610-49c0-b15e-138a0f8c33b4",
+    "version": "1.2.3"
+}
