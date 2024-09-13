@@ -44,6 +44,9 @@ With [Kanban](https://trello.com/b/6TZ1gF76/dadosfera) you can manage the tasks
  - [Mind map of Módulo de Inteligência](https://miro.com/app/board/uXjVKhhLbUM=/?share_link_id=897532648866)  
  - [Dadosfera login API](https://docs.dadosfera.ai/reference/authcontroller_signin)  
 
+## Data Life Cycle in Dadosfera
+![Data Life Cycle](./img/data-life-cycle.png)
+
  ## About DataLake e DataWareHouse
  &nbsp;              | DataLake                                                          | DataWareHouse  
  ---------           | -------                                                           | ------
