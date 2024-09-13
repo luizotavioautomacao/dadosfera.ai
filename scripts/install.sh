@@ -29,7 +29,7 @@ pip3 --version
 
 # Install dependencies with pip3
 echo "Instalando bibliotecas pandas e faker..."
-pip3 install pandas faker
+pip3 install pandas faker flask
 
 echo "Instalação concluída!"
 echo "Siga para o próximo passo."
