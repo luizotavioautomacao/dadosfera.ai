@@ -177,25 +177,6 @@
             "title": "api",
             "uuid": "18fc357c-9a19-4aa6-bdbf-e1c34cc5a86b"
         },
-        "231eb798-97e9-4908-8ea3-693b1b1cff23": {
-            "environment": "214991da-9750-4b20-8c65-5b184882c788",
-            "file_path": ".",
-            "incoming_connections": [],
-            "kernel": {
-                "display_name": "VsCode",
-                "name": "python"
-            },
-            "meta_data": {
-                "hidden": false,
-                "position": [
-                    983.5,
-                    556
-                ]
-            },
-            "parameters": {},
-            "title": "",
-            "uuid": "231eb798-97e9-4908-8ea3-693b1b1cff23"
-        },
         "4a70e1cc-f03b-473f-adc3-09784186fb69": {
             "environment": "214991da-9750-4b20-8c65-5b184882c788",
             "file_path": "gerando_dados",
