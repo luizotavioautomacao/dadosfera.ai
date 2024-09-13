@@ -1,0 +1,1 @@
+{"name": "FLASK_ENV=development + /data", "gpu_support": false, "language": "python", "uuid": "7b3eafbf-eac1-4e96-a7d3-1975e2c69a25", "base_image": "dadosfera/base-kernel-py:1.0.2"}

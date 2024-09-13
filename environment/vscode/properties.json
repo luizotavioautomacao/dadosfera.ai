@@ -1,0 +1,1 @@
+{"name": "VsCode", "gpu_support": false, "language": "python", "uuid": "214991da-9750-4b20-8c65-5b184882c788", "base_image": "orchest/base-kernel-py"}
