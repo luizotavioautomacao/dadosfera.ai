@@ -27,6 +27,9 @@ With [Kanban](https://trello.com/b/6TZ1gF76/dadosfera) you can manage the tasks
 8. [About Pipelines](https://app-intelligence-treinamentos.dadosfera.ai/pipeline?project_uuid=dc2f4baf-ea3e-4287-8e36-383eb4f77c1d&pipeline_uuid=50b28133-3610-49c0-b15e-138a0f8c33b4)  
 9. [Sobre Data Apps](/img/data-apps.png)  
 10. [Case apresentation](https://docs.google.com/presentation/d/1xCvihPQVDYsewTFi6hq6VRbWaOJudJoPRytGWiU7vm0/edit?usp=sharing)  
+---
+- [End-point em Flask para buscar kpis processado na pipeline](./img/api.png)  
+- [Streamlit acessa end-point e cria dashboards dos kpis](./img//dashboard.png)
 
 ## [Generate Synthetic Data](./generate-synthetic-data.py/)
 #### To generate synthetic data, we can use the `pandas` library to create a DataFrame with random  
