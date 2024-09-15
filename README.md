@@ -58,6 +58,7 @@ With [Kanban](https://trello.com/b/6TZ1gF76/dadosfera) you can manage this proje
  - [Dadosfera login API](https://docs.dadosfera.ai/reference/authcontroller_signin)  
 
 ## Data Life Cycle in Dadosfera
+- [What is Data Lake](https://docs.google.com/document/d/1rf3_g0txT6ub24TunV-Og84e7OKhgc8T-G1ZZDGwYFA/edit?usp=sharing)  
 ![Data Life Cycle](./img/data-life-cycle.png)
 
  ## About DataLake e DataWareHouse

@@ -5,7 +5,7 @@ import os
 
 # Initial Setup
 fake = Faker()
-output = "generate-csv/"
+output = "data/"
 n_client = 10000
 n_product = 500
 n_transaction = 100000
