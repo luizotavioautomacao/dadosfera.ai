@@ -1,1 +1,1 @@
-{"name": "Streamlit + Node + FLAS_ENV=d + OpenAi + Orchest depencies + /data", "gpu_support": false, "language": "python", "uuid": "f183d4f5-ae46-4822-941a-42011b3824ce", "base_image": "orchest/base-kernel-py"}
+{"name": "Streamlit + Node + FLAS_ENV=d + OpenAi + Orchest depencies + /data + matplotlib", "gpu_support": false, "language": "python", "uuid": "f183d4f5-ae46-4822-941a-42011b3824ce", "base_image": "orchest/base-kernel-py"}

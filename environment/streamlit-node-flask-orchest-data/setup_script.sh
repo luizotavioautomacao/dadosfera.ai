@@ -13,7 +13,7 @@ fi
 # Instalar Python 3.8 e dependências
 mamba create -y -n py38 python=3.8 future
 mamba install -y -n py38 ipykernel jupyter_client ipython_genutils pycryptodomex future "pyarrow<8.0.0"
-mamba run -n py38 pip install orchest flask
+mamba run -n py38 pip install orchest flask matplotlib
 pip install requests openai
 
 # Configuração do ambiente Jupyter e Orchest
