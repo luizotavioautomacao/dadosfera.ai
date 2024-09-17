@@ -28,8 +28,8 @@ python3 --version
 pip3 --version
 
 # Install dependencies with pip3
-echo "Instalando bibliotecas pandas e faker..."
-pip3 install pandas faker flask
+echo "Instalando bibliotecas pandas, faker, orchest-sdk"
+pip3 install pandas faker flask #orchest
 
 echo "Instalação concluída!"
 echo "Siga para o próximo passo."

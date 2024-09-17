@@ -3,6 +3,7 @@ from faker import Faker
 import random
 import os
 from datetime import datetime
+#import orchest
 
 # Initial Setup
 fake = Faker()
@@ -13,6 +14,7 @@ n_transaction = 400000
 n_behavior = 500000
 start_year = 2019
 end_year = datetime.now().year
+data_in_pipeline=False
 
 # Ensure the directory exists
 os.makedirs(output, exist_ok=True)
@@ -220,6 +222,12 @@ class DataSaver:
         else:
             print(f"File '{filepath}' already exists. Skipping save.")
 
+    def save_pipeline(self, data_dict: dict):
+        """Save all tables to files and as Orchest output."""
+
+        # Output the entire data dictionary to Orchest
+        #orchest.output(data_dict, name="all_tables")
+
 def main():
     generator = DataGenerator()
     saver = DataSaver(output)
@@ -234,20 +242,34 @@ def main():
     delivery_df = generator.generate_delivery(transactions_df.to_dict('records'))
     behavior_df = generator.generate_behavior(clients_df.to_dict('records'), n_behavior)
 
-    save_csv = [
-        (clients_df, 'clients.csv'),
-        (products_df, 'products.csv'),
-        (transactions_df, 'transactions.csv'),
-        (cart_df, 'carts.csv'),
-        (delivery_df, 'deliveries.csv'),
-        (behavior_df, 'behaviors.csv'),
-        (states_df, 'states.csv'),
-        (cities_df, 'cities.csv')
-        ]
+    if(data_in_pipeline):
+        data_dict = {
+            'clients': clients_df,
+            'products': products_df,
+            'transactions': transactions_df,
+            'carts': cart_df,
+            'deliveries': delivery_df,
+            'behaviors': behavior_df,
+            'states': states_df,
+            'cities': cities_df
+        }
+        saver.save_pipeline(data_dict)
 
-    # Itera sobre os dataframes e arquivos e salva cada um
-    for df, filename in save_csv:
-        saver.save_to_csv(df, filename)
+    else: # .cvs
+        save_csv = [
+            (clients_df, 'clients.csv'),
+            (products_df, 'products.csv'),
+            (transactions_df, 'transactions.csv'),
+            (cart_df, 'carts.csv'),
+            (delivery_df, 'deliveries.csv'),
+            (behavior_df, 'behaviors.csv'),
+            (states_df, 'states.csv'),
+            (cities_df, 'cities.csv')
+            ]
+
+        # Itera sobre os dataframes e arquivos e salva cada um
+        for df, filename in save_csv:
+            saver.save_to_csv(df, filename)
 
 if __name__ == "__main__":
     main()
