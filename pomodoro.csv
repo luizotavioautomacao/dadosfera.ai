@@ -35,10 +35,13 @@ Date,Pomodoro,Details
 14/09/2024,2,Representar interdependências e pontos críticos do projeto
 14/09/2024,2,Análise de risco; Estimativas de custos; Alocação de recursos
 15/09/2024,7,Desenhe o diagrama representando as camadas finais do DW proposto
-15/09/2024,3,Estudando o case para apresentação
+15/09/2024,5,Estudando o case para apresentação
 15/09/2024,3,Tela do dashboard com kpis de análise descritiva
 15/09/2024,5,Exploração de kpis para análise descritiva; Build novo ambiente add matplotlib.pyplot and numpy
-15/09/2024,0,Criar poc com webscraping e buscar anúncios desestruturados e aplicar com gemAI e LLMs para transformar em features
+15/09/2024,1,Trocar get .csv por geração de novos dados sintéticos e mellorias na geração de dados
+16/09/2024,3,Após gravação para case foi observado pela taxa de aquisição que os dados sintéticos produzido precisa de revisitada e regras adicionais; Além disso esse mesmo arquivo pode colocar os dados na pipeline ao invés de gerar .csv
+16/09/2024,0,Criar poc com webscraping e buscar anúncios desestruturados e aplicar com gemAI e LLMs para transformar em features
+16/09/2024,0,Data quality
 
 
 

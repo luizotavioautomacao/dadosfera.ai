@@ -2,14 +2,17 @@ import pandas as pd
 from faker import Faker
 import random
 import os
+from datetime import datetime
 
 # Initial Setup
 fake = Faker()
 output = "data/"
-n_client = 10000
-n_product = 500
-n_transaction = 100000
-n_behavior = 200000
+n_client = 163495
+n_product = 123
+n_transaction = 400000
+n_behavior = 500000
+start_year = 2019
+end_year = datetime.now().year
 
 # Ensure the directory exists
 os.makedirs(output, exist_ok=True)
@@ -19,20 +22,19 @@ class DataGenerator:
 
     def __init__(self):
         self.fake = Faker()
+        self.n_client = n_client
+        self.start_year = start_year
+        self.end_year = end_year
 
-    def generate_clients(self, num_clients, states_df, cities_df):
+    def generate_customer(self, year, states_df, cities_df):
         """Generate client data."""
         # Create a mapping of state code to cities
         state_to_cities = cities_df.groupby('COD UF')['NOME'].apply(list).to_dict()
-
-        clients = []
-        for _ in range(num_clients):
-            state_code = random.choice(states_df['COD'])
-            state = states_df[states_df['COD'] == state_code].iloc[0]
-            cities = state_to_cities.get(state_code, [])
-            city = random.choice(cities)
-
-            clients.append({
+        state_code = random.choice(states_df['COD'])
+        state = states_df[states_df['COD'] == state_code].iloc[0]
+        cities = state_to_cities.get(state_code, [])
+        city = random.choice(cities)
+        return {
                 'CustomerId': self.fake.uuid4(),
                 'Name': self.fake.name(),
                 'Age': random.randint(18, 70),
@@ -40,11 +42,47 @@ class DataGenerator:
                 'City': city,
                 'State': state['SIGLA'],
                 'Profession': self.fake.job(),
+                'RegistrationDate': self.fake.date_between(start_date=datetime(year, 1, 1),end_date=datetime(year, 12, 31)),
                 'LastVisit': self.fake.date_this_year(),
                 'PurchaseHistory': random.choice(['Baixo', 'Médio', 'Alto']),
                 'Preferences': random.choice(['Tecnologia', 'Moda', 'Decoração de Casa', 'Livros', 'Esportes']),
-            })
+            }
+
+    def generate_clients_over_time(self, states_df, cities_df):
+        """Generate client data over time, gradually increasing the number of clients each year."""
+
+        years = list(range(self.start_year, self.end_year + 1))  # Lista dos anos de início ao atual
+        clients_per_year = self._calculate_clients_per_year(years)
+
+        clients = []
+        for year in years:
+            num_clients_this_year = clients_per_year[year]
+            for _ in range(num_clients_this_year):
+                client = self.generate_customer(year, states_df, cities_df)
+                clients.append(client)
+
         return pd.DataFrame(clients)
+    
+
+    def _calculate_clients_per_year(self, years):
+        """Distribute the total number of clients over the years, gradually increasing."""
+        num_years = len(years)
+        # Exemplo de crescimento exponencial suave: cada ano tem mais clientes que o anterior
+        growth_rate = 1.5  # Aumenta o número de clientes a cada ano por essa taxa
+        base_clients = self.n_client // ((growth_rate ** num_years - 1) / (growth_rate - 1))
+
+        clients_per_year = {}
+        for i, year in enumerate(years):
+            clients_per_year[year] = int(base_clients * (growth_rate ** i))
+
+        # Ajusta para garantir que a soma final seja igual ao total de clientes
+        total_assigned_clients = sum(clients_per_year.values())
+        if total_assigned_clients != self.n_client:
+            difference = self.n_client - total_assigned_clients
+            clients_per_year[years[-1]] += difference  # Ajusta no último ano
+
+        return clients_per_year
+
     
     def generate_categories(self):
         """Generate category data."""
@@ -84,23 +122,26 @@ class DataGenerator:
             'Rating': random.uniform(1, 5),
         } for i in range(1, num_products + 1)]
         return pd.DataFrame(products)
-
-    def generate_transactions(self, clients, products, num_transactions):
-        """Generate transaction data."""
+    
+    def generate_transactions(self, clients, products, total_transactions):
+        """Generate transaction data, scaling the number by year."""
         transactions = []
-        for _ in range(num_transactions):
-            transactions.append({
-                'TransactionId': self.fake.uuid4(),
-                'CustomerId': random.choice(clients)['CustomerId'],
-                'ProductId': random.choice(products)['ProductId'],
-                'Date': self.fake.date_between(start_date='-1y', end_date='today'),
-                'Quantity': random.randint(1, 3),
-                'TotalValue': round(random.uniform(5, 500), 2),
-                'PaymentMethod': random.choice(['Credit Card', 'Debit Card', 'PayPal', 'Bank Transfer', 'Pix']),
-                'CouponApplied': random.choice([True, False]),
-                'Latitude': self.generate_latitude(),
-                'Longitude': self.generate_latitude()
-            })
+        year_distribution = {2019: 0.05, 2020: 0.10, 2021: 0.15, 2022: 0.25, 2023: 0.30, 2024: 0.15}
+        for year, proportion in year_distribution.items():
+            year_transactions = int(total_transactions * proportion)
+            for _ in range(year_transactions):
+                transactions.append({
+                    'TransactionId': self.fake.uuid4(),
+                    'CustomerId': random.choice(clients)['CustomerId'],
+                    'ProductId': random.choice(products)['ProductId'],
+                    'Date':  self.fake.date_between(start_date=datetime(year, 1, 1),end_date=datetime(year, 12, 31)),
+                    'Quantity': random.randint(1, 3),
+                    'TotalValue': round(random.uniform(5, 500), 2),
+                    'PaymentMethod': random.choice(['Credit Card', 'Debit Card', 'PayPal', 'Bank Transfer', 'Pix']),
+                    'CouponApplied': random.choice([True, False]),
+                    'Latitude': self.generate_latitude(),
+                    'Longitude': self.generate_longitude()
+                })
         return pd.DataFrame(transactions)
 
     def generate_cart(self, clients, products, num_carts):
@@ -117,15 +158,26 @@ class DataGenerator:
 
     def generate_delivery(self, transactions):
         """Generate delivery data."""
-        deliveries = [{
-            'DeliveryId': self.fake.uuid4(),
-            'TransactionId': transaction['TransactionId'],
-            'CustomerId': transaction['CustomerId'],
-            'DeliveryDate': self.fake.date_between(start_date=transaction['Date'], end_date='today'),
-            'DeliveryStatus': random.choice(['Pending', 'Shipped', 'Delivered', 'Cancelled']),
-            'Carrier': random.choice(['DHL', 'FedEx', 'UPS', 'USPS']),
-            'ShippingCost': round(random.uniform(5, 50), 2)
-        } for transaction in transactions]
+        deliveries = []
+        
+        for transaction in transactions:
+            # Ensure the transaction date is a date object
+            transaction_date = transaction['Date'].date() if isinstance(transaction['Date'], datetime) else transaction['Date']
+            
+            # Ensure the start_date is not after today's date
+            end_date = datetime.today().date()
+            start_date = min(transaction_date, end_date)  # Take the earlier of the two
+
+            deliveries.append({
+                'DeliveryId': self.fake.uuid4(),
+                'TransactionId': transaction['TransactionId'],
+                'CustomerId': transaction['CustomerId'],
+                'DeliveryDate': self.fake.date_between(start_date=start_date, end_date=end_date),
+                'DeliveryStatus': random.choice(['Pending', 'Shipped', 'Delivered', 'Cancelled']),
+                'Carrier': random.choice(['DHL', 'FedEx', 'UPS', 'USPS']),
+                'ShippingCost': round(random.uniform(5, 50), 2)
+            })
+        
         return pd.DataFrame(deliveries)
 
     def generate_behavior(self, clients, num_behaviors):
@@ -175,22 +227,27 @@ def main():
     # Generate data
     states_df = pd.read_csv("brasil/estados.csv")
     cities_df = generator.add_lat_long_to_cities(pd.read_csv("brasil/municipios.csv"))
-    clients_df = generator.generate_clients(n_client, states_df, cities_df)
+    clients_df = generator.generate_clients_over_time(states_df, cities_df)
     products_df = generator.generate_products(n_product)
-    transactions_df = generator.generate_transactions(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction)
     cart_df = generator.generate_cart(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction)
+    transactions_df = generator.generate_transactions(clients_df.to_dict('records'), products_df.to_dict('records'), n_transaction)
     delivery_df = generator.generate_delivery(transactions_df.to_dict('records'))
     behavior_df = generator.generate_behavior(clients_df.to_dict('records'), n_behavior)
 
-    # Save data
-    saver.save_to_csv(clients_df, 'clients.csv')
-    saver.save_to_csv(products_df, 'products.csv')
-    saver.save_to_csv(transactions_df, 'transactions.csv')
-    saver.save_to_csv(cart_df, 'carts.csv')
-    saver.save_to_csv(delivery_df, 'deliveries.csv')
-    saver.save_to_csv(behavior_df, 'behaviors.csv')
-    saver.save_to_csv(states_df, 'states.csv')
-    saver.save_to_csv(cities_df, 'cities.csv')
+    save_csv = [
+        (clients_df, 'clients.csv'),
+        (products_df, 'products.csv'),
+        (transactions_df, 'transactions.csv'),
+        (cart_df, 'carts.csv'),
+        (delivery_df, 'deliveries.csv'),
+        (behavior_df, 'behaviors.csv'),
+        (states_df, 'states.csv'),
+        (cities_df, 'cities.csv')
+        ]
+
+    # Itera sobre os dataframes e arquivos e salva cada um
+    for df, filename in save_csv:
+        saver.save_to_csv(df, filename)
 
 if __name__ == "__main__":
     main()
